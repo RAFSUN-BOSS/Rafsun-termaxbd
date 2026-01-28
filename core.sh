@@ -50,26 +50,6 @@ fi
 
 
 # Default prompt function
-prompt() {
-    if [ -d "$PWD" ]; then
-        if [ "$PWD" = "$HOME" ]; then
-            # Home directory → green prompt
-            printf "[38;2;0;255;120m\]=>>\[\033] "
-            return
-        fi
-
-        # Other directories → show last folder
-        local last_dir
-        last_dir=$(basename "$PWD")
-        printf "[38;2;0;255;120m\]=>>%s->\[\033] " "$last_dir"
-    else
-        # Broken directory → red prompt
-        printf "[38;2;255;80;80m\]=>>BROKEN->\[\033] "
-    fi
-}
-
-# Assign PS1 using command substitution
-PS1='$(prompt)'
 
 # -------- Clear --------
 c() { clear; }
@@ -86,7 +66,26 @@ Commands:
   go <path>        → jump directory
 
 Features:
-  • Run .py without python
+  • Runprompt() {
+    if [ -d "$PWD" ]; then
+        if [ "$PWD" = "$HOME" ]; then
+            # Home directory → simple prompt
+            printf "=> "
+            return
+        fi
+
+        # Other directories → show last folder
+        local last_dir
+        last_dir=$(basename "$PWD")
+        printf "=>%s-> " "$last_dir"
+    else
+        # Broken directory
+        printf "=>BROKEN-> "
+    fi
+}
+
+# Assign PS1
+PS1='$(prompt)' .py without python
   • Run .sh without bash
   • Use full path directly
 
