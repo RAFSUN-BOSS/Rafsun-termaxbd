@@ -11,8 +11,12 @@ pkg install -y git python
 rm -rf "$INSTALL_DIR"
 git clone "$REPO_URL" "$INSTALL_DIR"
 
-grep -q "Rafsun-termaxbd/core.sh" ~/.bashrc || \
-echo "source \$HOME/Rafsun-termaxbd/core.sh" >> ~/.bashrc
+# Ensure single source line
+sed -i '/Rafsun-termaxbd\/core.sh/d' ~/.bashrc
+echo 'source $HOME/Rafsun-termaxbd/core.sh' >> ~/.bashrc
 
 echo "[✓] Installation complete"
-echo "Restart Termux"
+echo "[!] Restarting shell to apply changes..."
+
+# 🔥 THIS IS THE KEY
+exec bash
