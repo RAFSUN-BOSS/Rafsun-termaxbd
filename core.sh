@@ -41,10 +41,10 @@ if [[ -n "$LATEST_VERSION" && "$LOCAL_VERSION" != "$LATEST_VERSION" ]]; then
 fi
 
 # -------- Load banner ONLY ONCE --------
-if [ -f "$REPO_DIR/banner.sh" ]; then
-    source "$REPO_DIR/banner.sh"
-    banner
-fi
+#if [ -f "$REPO_DIR/banner.sh" ]; then
+    #source "$REPO_DIR/banner.sh"
+    #banner
+#fi
 
 # -------- Prompt --------
 PS1="=>> "
