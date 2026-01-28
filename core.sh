@@ -1,5 +1,8 @@
 # ================= RAFSUN HACKER PAD =================
 
+# ---- ENABLE TRUECOLOR FOR TERMUX (FIX RGB ISSUE) ----
+export COLORTERM=truecolor
+
 REPO_DIR="$HOME/Rafsun-termaxbd"
 REPO_URL="https://github.com/RAFSUN-BOSS/Rafsun-termaxbd.git"
 VERSION_FILE="$REPO_DIR/version.txt"
