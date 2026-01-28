@@ -4,36 +4,43 @@ REPO_DIR="$HOME/Rafsun-termaxbd"
 REPO_URL="https://github.com/RAFSUN-BOSS/Rafsun-termaxbd.git"
 VERSION_FILE="$REPO_DIR/version.txt"
 
-# -------- Local version --------
+# -------- Get local version --------
 LOCAL_VERSION="0.0"
-[ -f "$VERSION_FILE" ] && LOCAL_VERSION=$(cat "$VERSION_FILE")
+[ -f "$VERSION_FILE" ] && LOCAL_VERSION="$(cat "$VERSION_FILE")"
 
-# -------- Latest version --------
-LATEST_VERSION=$(curl -fs https://raw.githubusercontent.com/RAFSUN-BOSS/Rafsun-termaxbd/main/version.txt)
+# -------- Get latest version --------
+LATEST_VERSION="$(curl -fs https://raw.githubusercontent.com/RAFSUN-BOSS/Rafsun-termaxbd/main/version.txt)"
 
-# -------- Update check --------
+# -------- Update check BEFORE anything else --------
 if [[ -n "$LATEST_VERSION" && "$LOCAL_VERSION" != "$LATEST_VERSION" ]]; then
     echo
     echo "New update available"
-    echo "1) Update now"
-    echo "2) Continue"
+    echo "1) Update now (FULL RESET)"
+    echo "2) Continue without update"
     read -p "Select option: " choice
 
     if [[ "$choice" == "1" ]]; then
-        # Remove old repo and clone new
+        echo
+        echo "Resetting system..."
+
+        # FULL DELETE (no mercy)
         rm -rf "$REPO_DIR"
+
+        # Fresh clone
         git clone "$REPO_URL" "$REPO_DIR" >/dev/null 2>&1
 
-        # Clean old bashrc link and add new one
+        # Clean old bashrc entry
         sed -i '/Rafsun-termaxbd\/core.sh/d' ~/.bashrc
+
+        # Add new source
         echo 'source $HOME/Rafsun-termaxbd/core.sh' >> ~/.bashrc
 
-        # Restart shell immediately, do NOT print old banner
+        # Hard restart shell (no old memory)
         exec bash
     fi
 fi
 
-# -------- Load banner once (after update check) --------
+# -------- Load banner ONLY ONCE --------
 if [ -f "$REPO_DIR/banner.sh" ]; then
     source "$REPO_DIR/banner.sh"
     banner
