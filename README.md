@@ -25,5 +25,8 @@ GitHub: https://github.com/RAFSUN-BOSS
 
 ## 🚀 Installation (One Command)
 
+# RAFSUN HACKER PAD
+
+## One‑Line Install
 ```bash
-git clone https://github.com/RAFSUN-BOSS/Rafsun-termaxbd && cd Rafsun-termaxbd && bash install.sh
+curl -s https://raw.githubusercontent.com/RAFSUN-BOSS/Rafsun-termaxbd/main/install.sh | bash
