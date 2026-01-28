@@ -75,7 +75,18 @@ alias help='h'
 
 # -------- Go --------
 go() {
-    [ -d "$1" ] && cd "$1" || echo "Path not found"
+    if [ "$#" -eq 0 ]; then
+        echo "Usage: go <path>"
+        return 1
+    fi
+
+    local target="$*"
+
+    if [ -d "$target" ]; then
+        cd "$target" || return
+    else
+        echo "Path not found"
+    fi
 }
 
 # -------- Auto run scripts --------
