@@ -47,10 +47,24 @@ fi
 #fi
 
 # -------- Prompt --------
-PS1="=>> "
+
+
+prompt() {
+    local last_dir
+
+    # If current directory exists
+    if [ -d "$PWD" ]; then
+        last_dir=$(basename "$PWD")
+        printf "\[\033[38;2;0;255;120m\]=>>%s->\[\033[0m\] " "$last_dir"
+    else
+        # Directory broken / deleted
+        printf "\[\033[38;2;255;80;80m\]=>>BROKEN->\[\033[0m\] "
+    fi
+}
+PS1='$(prompt)'
 
 # -------- Clear --------
-c() { clear; banner; }
+c() { clear; }
 alias clear='c'
 
 # -------- Help --------
