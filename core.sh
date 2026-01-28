@@ -52,22 +52,24 @@ fi
 prompt() {
     local last_dir
 
-    # If directory is broken
+    # Directory missing / broken
     if [ ! -d "$PWD" ]; then
         printf "\[\033[38;2;255;80;80m\]=>>BROKEN->\[\033[0m\] "
         return
     fi
 
-    # If HOME directory → default prompt
+    # HOME directory → default prompt
     if [ "$PWD" = "$HOME" ]; then
         printf "\[\033[38;2;0;255;120m\]=>>\[\033[0m\] "
         return
     fi
 
-    # Any other directory → show folder name
+    # Other directories → last folder
     last_dir=$(basename "$PWD")
     printf "\[\033[38;2;0;255;120m\]=>>%s->\[\033[0m\] " "$last_dir"
 }
+
+# Assign PS1 AFTER defining the function
 PS1='$(prompt)'
 
 # -------- Clear --------
