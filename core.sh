@@ -3,36 +3,36 @@
 REPO_DIR="$HOME/Rafsun-termaxbd"
 REPO_URL="https://github.com/RAFSUN-BOSS/Rafsun-termaxbd.git"
 
-source "$REPO_DIR/banner.sh"
+LOCAL_VERSION=$(cat "$REPO_DIR/version.txt")
 
-# -------- Prompt --------
-PS1="=>> "
+# -------- Fetch latest version --------
+LATEST_VERSION=$(curl -s https://raw.githubusercontent.com/RAFSUN-BOSS/Rafsun-termaxbd/main/version.txt)
 
-# -------- Auto Update Check --------
-cd "$REPO_DIR"
-
-git fetch origin main >/dev/null 2>&1
-
-LOCAL=$(git rev-parse main)
-REMOTE=$(git rev-parse origin/main)
-
-if [ "$LOCAL" != "$REMOTE" ]; then
+# -------- Version check --------
+if [ "$LOCAL_VERSION" != "$LATEST_VERSION" ]; then
     echo
-    echo "[!] Update available"
+    echo "[!] New version available"
+    echo "Installed : $LOCAL_VERSION"
+    echo "Latest    : $LATEST_VERSION"
+    echo
     echo "1) Update now"
     echo "2) Continue without update"
     read -p "Select option: " choice
 
     if [ "$choice" = "1" ]; then
         echo "[+] Updating..."
-        git pull origin main
-        echo "[✓] Updated successfully"
+        rm -rf "$REPO_DIR"
+        git clone "$REPO_URL" "$REPO_DIR"
+        echo "[✓] Updated to version $LATEST_VERSION"
         sleep 1
         exec bash
     fi
 fi
 
-banner
+source "$REPO_DIR/banner.sh"
+
+# -------- Prompt --------
+PS1="=>> "
 
 # -------- Clear --------
 c() { clear; banner; }
@@ -44,18 +44,17 @@ HACKER PAD HELP
 
 Commands:
 • c / clear        → clear screen
-• h / help         → show this help
+• h / help         → show help
 • go <path>        → jump directory
 
 Features:
-• Run .py without python
-• Run .sh without bash
-• Use full path directly
+• Run .py directly
+• Run .sh directly
+• Use full path without cd
 
 Creator : RAFSUN-BOSS
 EOF
 }
-
 alias help='h'
 
 # -------- Go --------
@@ -67,7 +66,7 @@ go() {
     fi
 }
 
-# -------- Auto-run .py & .sh --------
+# -------- Auto run scripts --------
 command_not_found_handle() {
 
     if [[ "$1" == *.py && -f "$1" ]]; then
