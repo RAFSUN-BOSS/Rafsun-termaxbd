@@ -16,24 +16,26 @@ if [[ -n "$LATEST_VERSION" && "$LOCAL_VERSION" != "$LATEST_VERSION" ]]; then
     echo
     echo "New update available"
     echo "1) Update now"
-    echo "2) Continue"
+    echo "2) Continue without update"
     read -p "Select option: " choice
 
     if [[ "$choice" == "1" ]]; then
+        # ---------- Delete old version completely ----------
         rm -rf "$REPO_DIR"
+
+        # ---------- Clone latest version ----------
         git clone "$REPO_URL" "$REPO_DIR" >/dev/null 2>&1
 
-        # Remove old core.sh link
+        # ---------- Clean old bashrc entry ----------
         sed -i '/Rafsun-termaxbd\/core.sh/d' ~/.bashrc
         echo 'source $HOME/Rafsun-termaxbd/core.sh' >> ~/.bashrc
 
-        # Clear screen and immediately restart shell
+        # ---------- Restart shell with new version ----------
         exec bash
-        # ❌ Do NOT call banner here, exec reloads core.sh anyway
     fi
 fi
 
-# -------- Load banner once --------
+# -------- Load banner once (after update check) --------
 if [ -f "$REPO_DIR/banner.sh" ]; then
     source "$REPO_DIR/banner.sh"
     banner
