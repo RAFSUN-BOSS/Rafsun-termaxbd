@@ -1,18 +1,28 @@
 #!/data/data/com.termux/files/usr/bin/bash
-
 set -e
 
 echo "[+] Installing RAFSUN HACKER PAD..."
 
 pkg install -y git python
 
-cd $HOME
+INSTALL_DIR="$HOME/Rafsun-termaxbd"
 
-if [ ! -d "Rafsun-termaxbd" ]; then
-    git clone https://github.com/RAFSUN-BOSS/Rafsun-termaxbd.git
+# Remove old version completely
+if [ -d "$INSTALL_DIR" ]; then
+    echo "[*] Removing old version..."
+    rm -rf "$INSTALL_DIR"
 fi
 
-grep -q "Rafsun-termaxbd/core.sh" ~/.bashrc || echo "source \$HOME/Rafsun-termaxbd/core.sh" >> ~/.bashrc
+# Fresh clone
+git clone https://github.com/RAFSUN-BOSS/Rafsun-termaxbd.git "$INSTALL_DIR"
 
-echo "[✓] Installed successfully"
-echo "Restart Termux"
+# Clean old source lines
+sed -i '/Rafsun-termaxbd\/core.sh/d' ~/.bashrc
+
+# Link new core
+echo "source \$HOME/Rafsun-termaxbd/core.sh" >> ~/.bashrc
+
+echo "[✓] Installation complete"
+echo "Restarting Termux..."
+sleep 1
+exec bash
