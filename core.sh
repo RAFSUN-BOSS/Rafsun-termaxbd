@@ -1,8 +1,5 @@
 # ================= RAFSUN HACKER PAD =================
 
-# ---- ENABLE TRUECOLOR FOR TERMUX (FIX RGB ISSUE) ----
-export COLORTERM=truecolor
-
 REPO_DIR="$HOME/Rafsun-termaxbd"
 REPO_URL="https://github.com/RAFSUN-BOSS/Rafsun-termaxbd.git"
 VERSION_FILE="$REPO_DIR/version.txt"
@@ -11,33 +8,35 @@ VERSION_FILE="$REPO_DIR/version.txt"
 LOCAL_VERSION="0.0"
 [ -f "$VERSION_FILE" ] && LOCAL_VERSION=$(cat "$VERSION_FILE")
 
-# -------- Latest version (silent) --------
-LATEST_VERSION=$(curl -fs https://raw.githubusercontent.com/RAFSUN-BOSS/Rafsun-termaxbd/main/version.txt 2>/dev/null)
+# -------- Latest version --------
+LATEST_VERSION=$(curl -fs https://raw.githubusercontent.com/RAFSUN-BOSS/Rafsun-termaxbd/main/version.txt)
 
-# -------- Update check (silent until mismatch) --------
-if [ -n "$LATEST_VERSION" ] && [ "$LOCAL_VERSION" != "$LATEST_VERSION" ]; then
+# -------- Update check --------
+if [[ -n "$LATEST_VERSION" && "$LOCAL_VERSION" != "$LATEST_VERSION" ]]; then
     echo
     echo "New update available"
     echo "1) Update now"
     echo "2) Continue"
     read -p "Select option: " choice
 
-    if [ "$choice" = "1" ]; then
+    if [[ "$choice" == "1" ]]; then
         rm -rf "$REPO_DIR"
         git clone "$REPO_URL" "$REPO_DIR" >/dev/null 2>&1
 
-        sed -i '/Rafsun-termaxbd/d' ~/.bashrc
+        sed -i '/Rafsun-termaxbd\/core.sh/d' ~/.bashrc
         echo 'source $HOME/Rafsun-termaxbd/core.sh' >> ~/.bashrc
 
-        exec bash
+        clear
+        source "$REPO_DIR/banner.sh"
+        banner
+        PS1="=>> "
+        return
     fi
 fi
 
 # -------- Load banner --------
-if [ -f "$REPO_DIR/banner.sh" ]; then
-    source "$REPO_DIR/banner.sh"
-    banner
-fi
+source "$REPO_DIR/banner.sh"
+banner
 
 # -------- Prompt --------
 PS1="=>> "
@@ -84,7 +83,6 @@ command_not_found_handle() {
         return 0
     fi
 
-    echo "Command not found"
     return 127
 }
 
