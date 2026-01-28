@@ -20,17 +20,17 @@ if [[ -n "$LATEST_VERSION" && "$LOCAL_VERSION" != "$LATEST_VERSION" ]]; then
     read -p "Select option: " choice
 
     if [[ "$choice" == "1" ]]; then
-        # ---------- Delete old version completely ----------
+        # Delete old version completely
         rm -rf "$REPO_DIR"
 
-        # ---------- Clone latest version ----------
+        # Clone latest version
         git clone "$REPO_URL" "$REPO_DIR" >/dev/null 2>&1
 
-        # ---------- Clean old bashrc entry ----------
+        # Clean old core.sh from bashrc and add new one
         sed -i '/Rafsun-termaxbd\/core.sh/d' ~/.bashrc
         echo 'source $HOME/Rafsun-termaxbd/core.sh' >> ~/.bashrc
 
-        # ---------- Restart shell with new version ----------
+        # Restart shell immediately, banner prints only once in new shell
         exec bash
     fi
 fi
