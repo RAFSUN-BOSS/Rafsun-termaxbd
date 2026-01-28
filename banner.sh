@@ -1,8 +1,9 @@
-banner() {
-    [ -n "$_BANNER_ONCE" ] && return
-    _BANNER_ONCE=1
+#!/data/data/com.termux/files/usr/bin/bash
 
-    VERSION=$(cat "$HOME/Rafsun-termaxbd/version.txt" 2>/dev/null)
+banner() {
+    VERSION_FILE="$HOME/Rafsun-termaxbd/version.txt"
+    VERSION="UNKNOWN"
+    [ -f "$VERSION_FILE" ] && VERSION=$(cat "$VERSION_FILE")
 
     cat <<EOF
  _   _    _    ____ _  __ _____ ____
