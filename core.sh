@@ -45,7 +45,26 @@ fi
     #source "$REPO_DIR/banner.sh"
     #banner
 #fi
+prompt() {
+    if [ -d "$PWD" ]; then
+        if [ "$PWD" = "$HOME" ]; then
+            # Home directory → simple prompt
+            printf "=> "
+            return
+        fi
 
+        # Other directories → show last folder
+        local last_dir
+        last_dir=$(basename "$PWD")
+        printf "=>%s-> " "$last_dir"
+    else
+        # Broken directory
+        printf "=>BROKEN-> "
+    fi
+}
+
+# Assign PS1
+PS1='$(prompt)'
 # -------- Prompt --------
 
 
