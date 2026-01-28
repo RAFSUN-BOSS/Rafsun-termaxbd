@@ -23,20 +23,21 @@ if [[ -n "$LATEST_VERSION" && "$LOCAL_VERSION" != "$LATEST_VERSION" ]]; then
         rm -rf "$REPO_DIR"
         git clone "$REPO_URL" "$REPO_DIR" >/dev/null 2>&1
 
+        # Remove old core.sh link
         sed -i '/Rafsun-termaxbd\/core.sh/d' ~/.bashrc
         echo 'source $HOME/Rafsun-termaxbd/core.sh' >> ~/.bashrc
 
-        clear
-        source "$REPO_DIR/banner.sh"
-        banner
-        PS1="=>> "
-        return
+        # Clear screen and immediately restart shell
+        exec bash
+        # ❌ Do NOT call banner here, exec reloads core.sh anyway
     fi
 fi
 
-# -------- Load banner --------
-source "$REPO_DIR/banner.sh"
-banner
+# -------- Load banner once --------
+if [ -f "$REPO_DIR/banner.sh" ]; then
+    source "$REPO_DIR/banner.sh"
+    banner
+fi
 
 # -------- Prompt --------
 PS1="=>> "
