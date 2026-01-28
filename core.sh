@@ -71,7 +71,7 @@ PS1='$(prompt)'
 # Default prompt function
 
 # -------- Clear --------
-c() { clear; }
+c() { clear; banner; }
 alias clear='c'
 
 # -------- Help --------
