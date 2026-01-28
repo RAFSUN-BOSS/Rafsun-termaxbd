@@ -51,10 +51,9 @@ fi
 
 # Default prompt function
 prompt() {
-    # If current directory exists
     if [ -d "$PWD" ]; then
-        # HOME directory → default prompt
         if [ "$PWD" = "$HOME" ]; then
+            # Home directory → green prompt
             printf "\[\033[38;2;0;255;120m\]=>>\[\033[0m\] "
             return
         fi
@@ -64,12 +63,12 @@ prompt() {
         last_dir=$(basename "$PWD")
         printf "\[\033[38;2;0;255;120m\]=>>%s->\[\033[0m\] " "$last_dir"
     else
-        # Broken directory
+        # Broken directory → red prompt
         printf "\[\033[38;2;255;80;80m\]=>>BROKEN->\[\033[0m\] "
     fi
 }
 
-# Assign PS1 AFTER defining the function
+# Assign PS1 using command substitution
 PS1='$(prompt)'
 
 # -------- Clear --------
