@@ -54,17 +54,17 @@ prompt() {
     if [ -d "$PWD" ]; then
         if [ "$PWD" = "$HOME" ]; then
             # Home directory → green prompt
-            printf "\[\033[38;2;0;255;120m\]=>>\[\033[0m\] "
+            printf "[38;2;0;255;120m\]=>>\[\033] "
             return
         fi
 
         # Other directories → show last folder
         local last_dir
         last_dir=$(basename "$PWD")
-        printf "\[\033[38;2;0;255;120m\]=>>%s->\[\033[0m\] " "$last_dir"
+        printf "[38;2;0;255;120m\]=>>%s->\[\033] " "$last_dir"
     else
         # Broken directory → red prompt
-        printf "\[\033[38;2;255;80;80m\]=>>BROKEN->\[\033[0m\] "
+        printf "[38;2;255;80;80m\]=>>BROKEN->\[\033] "
     fi
 }
 
