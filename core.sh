@@ -52,14 +52,21 @@ fi
 prompt() {
     local last_dir
 
-    # If current directory exists
-    if [ -d "$PWD" ]; then
-        last_dir=$(basename "$PWD")
-        printf "\[\033[38;2;0;255;120m\]=>>%s->\[\033[0m\] " "$last_dir"
-    else
-        # Directory broken / deleted
+    # If directory is broken
+    if [ ! -d "$PWD" ]; then
         printf "\[\033[38;2;255;80;80m\]=>>BROKEN->\[\033[0m\] "
+        return
     fi
+
+    # If HOME directory → default prompt
+    if [ "$PWD" = "$HOME" ]; then
+        printf "\[\033[38;2;0;255;120m\]=>>\[\033[0m\] "
+        return
+    fi
+
+    # Any other directory → show folder name
+    last_dir=$(basename "$PWD")
+    printf "\[\033[38;2;0;255;120m\]=>>%s->\[\033[0m\] " "$last_dir"
 }
 PS1='$(prompt)'
 
