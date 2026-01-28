@@ -128,7 +128,43 @@ go() {
         echo "Path not found"
     fi
 }
+# -------- Git Clone Shortcut --------
+cn() {
+    if [ "$#" -ne 1 ]; then
+        echo "Usage: cn <git-repo-url>"
+        return 1
+    fi
 
+    if ! command -v git >/dev/null 2>&1; then
+        echo "git is not installed"
+        return 1
+    fi
+
+    echo "Cloning repository..."
+    git clone "$1"
+}
+# Run python script without typing python
+py() {
+    if [ -f "$1" ]; then
+        python "$1"
+    else
+        echo "File not found"
+    fi
+}
+
+# Run bash script without typing bash
+sh() {
+    if [ -f "$1" ]; then
+        bash "$1"
+    else
+        echo "File not found"
+    fi
+}
+
+# Force update shortcut
+update() {
+    source $HOME/Rafsun-termaxbd/core.sh
+}
 # -------- Auto run scripts --------
 command_not_found_handle() {
 
